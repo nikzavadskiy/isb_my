@@ -1,14 +1,15 @@
-from functions import load_key, load_source_text, vigenere_encrypt, save_encrypted_text
-from conf import ALPHABET
+from functions import*
+from encrypt_decrypt import vigenere_encrypt
 import json
 
 
 def main():
     try:
-        key = load_key()
-        source_text = load_source_text()
+        config =  read_json_config('conf2.json')
+        key = load_key(config)
+        source_text = load_source_text(config)
         
-        encrypted_text = vigenere_encrypt(source_text, key, ALPHABET)
+        encrypted_text = vigenere_encrypt(source_text, key, config['ALPHABET'])
         save_encrypted_text(encrypted_text)
         print("Шифрование успешно завершено!")
         
