@@ -9,6 +9,8 @@ def read_file(file_path):
             if not text:
     except FileNotFoundError:
         raise FileNotFoundError(f"Исходный файл {file_path} не найден")
+    except UnicodeDecodeError:
+        raise UnicodeDecodeError(f"Файл {file_path} содержит неверные символы")
 
 
 def read_json_config(file_path):
