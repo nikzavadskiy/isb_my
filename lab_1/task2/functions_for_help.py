@@ -7,8 +7,6 @@ def read_file(file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
             text = file.read()
             if not text:
-                raise ValueError("Исходный файл пуст")
-            return text
     except FileNotFoundError:
         raise FileNotFoundError(f"Исходный файл {file_path} не найден")
 
