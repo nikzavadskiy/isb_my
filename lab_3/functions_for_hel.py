@@ -7,31 +7,51 @@ def save_rsa_keys(private_key, public_key,
                  private_key_path: str, public_key_path: str) -> None:
     """
     Save RSA keys to files.
+    
+    Args:
+        private_key: RSA private key object
+        public_key: RSA public key object
+        private_key_path: Path to save the private key
+        public_key_path: Path to save the public key
     """
-    pem_private = private_key.private_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption()
-    )
-    with open(private_key_path, 'wb') as f:
-        f.write(pem_private)
+    try:
+        pem_private = private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption()
+        )
+        with open(private_key_path, 'wb') as f:
+            f.write(pem_private)
         
-    pem_public = public_key.public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo
-    )
-    with open(public_key_path, 'wb') as f:
-        f.write(pem_public)
+        pem_public = public_key.public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo
+        )
+        with open(public_key_path, 'wb') as f:
+            f.write(pem_public)
+    except IOError as e:
+        raise IOError(f"Error saving RSA keys: {str(e)}")
 
 def load_rsa_private_key(private_key_path: str):
     """
     Load RSA private key from file.
+    
+    Args:
+        private_key_path: Path to the private key file
+        
+    Returns:
+        RSA private key object
     """
-    with open(private_key_path, 'rb') as f:
-        return serialization.load_pem_private_key(
-            f.read(),
-            password=None
-        )
+    try:
+        with open(private_key_path, 'rb') as f:
+            return serialization.load_pem_private_key(
+                f.read(),
+                password=None
+            )
+    except IOError as e:
+        raise IOError(f"Error reading private key file: {str(e)}")
+    except ValueError as e:
+        raise ValueError(f"Invalid key format: {str(e)}")
 
 def save_encrypted_symmetric_key(encrypted_key: bytes, path: str) -> None:
     """
@@ -41,8 +61,11 @@ def save_encrypted_symmetric_key(encrypted_key: bytes, path: str) -> None:
         encrypted_key: Encrypted symmetric key
         path: Path to save the key
     """
-    with open(path, 'wb') as f:
-        pickle.dump(encrypted_key, f)
+    try:
+        with open(path, 'wb') as f:
+            pickle.dump(encrypted_key, f)
+    except IOError as e:
+        raise IOError(f"Error saving encrypted symmetric key: {str(e)}")
 
 def load_encrypted_symmetric_key(path: str) -> bytes:
     """
@@ -54,9 +77,14 @@ def load_encrypted_symmetric_key(path: str) -> bytes:
     Returns:
         Encrypted symmetric key
     """
-    with open(path, 'rb') as f:
-        return pickle.load(f)
-
+    try:
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+    except IOError as e:
+        raise IOError(f"Error reading encrypted symmetric key: {str(e)}")
+    except pickle.UnpicklingError as e:
+        raise pickle.UnpicklingError(f"Invalid pickle data: {str(e)}")
+      
 def read_file(path: str) -> bytes:
     """
     Read file contents.
@@ -67,8 +95,11 @@ def read_file(path: str) -> bytes:
     Returns:
         File contents as bytes
     """
-    with open(path, 'rb') as f:
-        return f.read()
+    try:
+        with open(path, 'rb') as f:
+            return f.read()
+    except IOError as e:
+        raise IOError(f"Error reading file: {str(e)}")
 
 def write_file(data: bytes, path: str) -> None:
     """
@@ -78,8 +109,11 @@ def write_file(data: bytes, path: str) -> None:
         data: Data to write
         path: Path to write to
     """
-    with open(path, 'wb') as f:
-        f.write(data)
+    try:
+        with open(path, 'wb') as f:
+            f.write(data)
+    except IOError as e:
+        raise IOError(f"Error writing to file: {str(e)}")
 
 def save_encrypted_text(data: bytes, path: str) -> None:
     """
@@ -89,8 +123,11 @@ def save_encrypted_text(data: bytes, path: str) -> None:
         data: Encrypted data
         path: Path to save the encrypted text
     """
-    with open(path, 'wb') as f:
-        f.write(data)
+    try:
+        with open(path, 'wb') as f:
+            f.write(data)
+    except IOError as e:
+        raise IOError(f"Error saving encrypted text: {str(e)}")
 
 def save_decrypted_text(data: bytes, path: str) -> None:
     """
@@ -100,5 +137,8 @@ def save_decrypted_text(data: bytes, path: str) -> None:
         data: Decrypted data
         path: Path to save the decrypted text
     """
-    with open(path, 'wb') as f:
-        f.write(data) 
+    try:
+        with open(path, 'wb') as f:
+            f.write(data)
+    except IOError as e:
+        raise IOError(f"Error saving decrypted text: {str(e)}") 
