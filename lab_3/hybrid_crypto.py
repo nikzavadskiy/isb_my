@@ -23,9 +23,6 @@ class HybridCryptoSystem:
 
         functions_for_hel.save_rsa_keys(self.private_key, self.public_key, private_key_path, public_key_path)
 
-        with open('symmetric_key.txt', 'wb') as f:
-            f.write(self.symmetric_key)
-
         encrypted_symmetric_key = AsymmetricCrypto.encrypt(self.symmetric_key, self.public_key)
         functions_for_hel.save_encrypted_symmetric_key(encrypted_symmetric_key, encrypted_key_path)
 
