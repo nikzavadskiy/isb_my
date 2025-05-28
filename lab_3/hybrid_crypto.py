@@ -3,10 +3,6 @@ from asymmetric_crypto import AsymmetricCrypto
 import functions_for_hel
 
 class HybridCryptoSystem:
-    def __init__(self):
-        self.symmetric_key = SymmetricCrypto()
-        self.asymmetric = AsymmetricCrypto()
-
     def generate_keys(self, encrypted_key_path: str, public_key_path: str, private_key_path: str) -> None:
         """
         Generate and save all necessary keys for the hybrid system.
