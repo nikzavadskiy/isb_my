@@ -4,9 +4,8 @@ import functions_for_hel
 
 class HybridCryptoSystem:
     def __init__(self):
-        self.symmetric_key = None
-        self.public_key = None
-        self.private_key = None
+        self.symmetric_key = SymmetricCrypto()
+        self.asymmetric = AsymmetricCrypto()
 
     def generate_keys(self, encrypted_key_path: str, public_key_path: str, private_key_path: str) -> None:
         """
